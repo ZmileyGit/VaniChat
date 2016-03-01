@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
 public class Server {
     
     public static final Charset CHARSET = Charset.forName("UTF-16");
-    protected ChatListener listener;
+    protected Listener listener;
     
     public Server(ChatListener listener){
         this.listener = listener;
