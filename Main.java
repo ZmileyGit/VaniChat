@@ -1,7 +1,7 @@
 
 import java.io.IOException;
-import server.ChatListener;
-import server.Server;
+import network.server.ChatListener;
+import network.server.Server;
 
 public class Main {
     public static void main(String... args){

@@ -1,7 +1,7 @@
 
-package security;
+package network.security;
 
-import mensajes.MensajeDescifrado;
+import structure.messages.MensajeDescifrado;
 
 public interface Descifrable {
     public MensajeDescifrado descifrar();

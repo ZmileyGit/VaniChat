@@ -1,7 +1,7 @@
 
-package client;
+package network.client;
 
-import estructura.Usuario;
+import structure.main.Usuario;
 
 public class Client {
     private final Usuario usuario;

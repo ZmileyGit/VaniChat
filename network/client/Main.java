@@ -1,6 +1,6 @@
-package client;
+package network.client;
 
-import estructura.Usuario;
+import structure.main.Usuario;
 import java.util.Scanner;
 
 public class Main {

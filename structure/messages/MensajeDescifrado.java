@@ -1,8 +1,8 @@
 
-package mensajes;
+package structure.messages;
 
-import estructura.Usuario;
-import security.Cifrable;
+import structure.main.Usuario;
+import network.security.Cifrable;
 
 public abstract class MensajeDescifrado extends Mensaje implements Cifrable {
     

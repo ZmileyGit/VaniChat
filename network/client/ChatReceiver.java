@@ -1,9 +1,9 @@
-package client;
+package network.client;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import server.Server;
+import network.server.Server;
 
 public class ChatReceiver extends Receiver{
     

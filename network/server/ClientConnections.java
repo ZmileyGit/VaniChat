@@ -1,12 +1,12 @@
 
-package server;
+package network.server;
 
-import estructura.Usuario;
+import structure.main.Usuario;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
-import mensajes.Mensaje;
+import structure.messages.Mensaje;
 
 public class ClientConnections {
     private final HashMap<Usuario,ClientConnection> CONNECTIONS = new HashMap<>();

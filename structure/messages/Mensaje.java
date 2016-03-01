@@ -1,9 +1,9 @@
 
-package mensajes;
+package structure.messages;
 
 import java.time.ZonedDateTime;
-import estructura.Usuario;
-import security.Cifrable;
+import structure.main.Usuario;
+import network.security.Cifrable;
 
 public abstract class Mensaje{
     protected final byte[] data;

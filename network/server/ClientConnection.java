@@ -1,5 +1,5 @@
 
-package server;
+package network.server;
 
 import java.io.DataInputStream;
 import java.io.IOException;

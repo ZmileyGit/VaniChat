@@ -1,11 +1,11 @@
 
-package client;
+package network.client;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
-import server.Stoppable;
+import network.server.Stoppable;
 
 public abstract class Receiver implements Runnable,Stoppable{
     

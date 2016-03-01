@@ -1,5 +1,5 @@
 
-package estructura;
+package structure.main;
 
 import java.net.Socket;
 import java.util.Objects;

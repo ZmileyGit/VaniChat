@@ -1,15 +1,15 @@
 
-package client;
+package network.client;
 
-import estructura.Usuario;
+import structure.main.Usuario;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
-import mensajes.Texto;
-import server.Stoppable;
+import structure.messages.Texto;
+import network.server.Stoppable;
 
 public class ChatConnector extends Connector implements Stoppable{
     

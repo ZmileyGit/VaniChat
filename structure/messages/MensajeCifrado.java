@@ -1,7 +1,7 @@
-package mensajes;
+package structure.messages;
 
-import estructura.Usuario;
-import security.Descifrable;
+import structure.main.Usuario;
+import network.security.Descifrable;
 
 public class MensajeCifrado extends Mensaje implements Descifrable{
     

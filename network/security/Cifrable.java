@@ -1,7 +1,7 @@
 
-package security;
+package network.security;
 
-import mensajes.MensajeCifrado;
+import structure.messages.MensajeCifrado;
 
 public interface Cifrable {
     public MensajeCifrado cifrar();

@@ -1,4 +1,4 @@
-package mensajes;
+package structure.messages;
 
 public abstract class Estado {
 

@@ -1,7 +1,7 @@
 
-package server;
+package network.server;
 
-import mensajes.Mensaje;
+import structure.messages.Mensaje;
 
 public class BroadcastTest implements Runnable{
     private final Mensaje message;

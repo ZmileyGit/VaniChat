@@ -1,8 +1,8 @@
 
-package mensajes;
+package structure.messages;
 
-import estructura.Usuario;
-import server.Server;
+import structure.main.Usuario;
+import network.server.Server;
 
 public class Texto extends MensajeDescifrado{
     
