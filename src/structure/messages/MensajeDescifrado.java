@@ -3,6 +3,7 @@ package structure.messages;
 
 import structure.main.Usuario;
 import network.security.Cifrable;
+import network.security.HandlerCifrado;
 
 public abstract class MensajeDescifrado extends Mensaje implements Cifrable {
     
@@ -12,7 +13,9 @@ public abstract class MensajeDescifrado extends Mensaje implements Cifrable {
     
     @Override
     public MensajeCifrado cifrar(){
-        return null;
+        HandlerCifrado handler = HandlerCifrado.getInstance();
+        
+        return handler.cifrar(this);
     }
     
 }
