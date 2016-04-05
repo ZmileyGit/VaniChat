@@ -11,15 +11,15 @@ using System.Net;
 
 namespace VaniChat
 {
-    public partial class Form1 : Form
+    public partial class Inicio : Form
     {
 
-        public readonly string IP = "127.0.0.1";
-        public readonly int port = 8080;
+        private readonly string IP = "127.0.0.1";
+        private readonly int port = 8080;
 
         private ClientConnection connection;
 
-        public Form1()
+        public Inicio()
         {
             InitializeComponent();
         }
@@ -31,12 +31,7 @@ namespace VaniChat
             connection = new ClientConnection(socket, endP);
             try {
                 int id = connection.Connect(textBox1.Text);
-                if (id != 0)
-                {
-                    MessageBox.Show("Error");
-                }
-
-                Usuarios c = new Usuarios(connection);
+                Conversaciones c = new Conversaciones(connection);
                 this.Visible = false;
                 c.ShowDialog();
                 this.Visible = true;

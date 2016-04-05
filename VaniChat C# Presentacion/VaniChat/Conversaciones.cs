@@ -9,29 +9,27 @@ using System.Windows.Forms;
 
 namespace VaniChat
 {
-    public partial class Usuarios : Form
+    public partial class Conversaciones : Form
     {
         private ClientConnection connection;
 
-        public Usuarios()
+        public Conversaciones()
         {
             InitializeComponent();
         }
 
-        public Usuarios(ClientConnection connection)
+        public Conversaciones(ClientConnection connection)
         {
             InitializeComponent();
             this.connection = connection;
             label1.Text = this.connection.username;
-            //this.connection.requestUsers();
+            //this.connection.requestActive();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(listBox1.SelectedIndex != -1)
-            {
-
-            }
+            EstablecerSesion s = new EstablecerSesion(connection,this);
+            s.ShowDialog();
         }
     }
 }

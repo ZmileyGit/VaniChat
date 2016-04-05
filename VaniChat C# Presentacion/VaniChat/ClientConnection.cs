@@ -46,12 +46,22 @@ namespace VaniChat
             connection.Send(b);
         }
 
-        public void requestUsers()
+        public void requestActive()
         {
-            connection.Send(BitConverter.GetBytes((byte)3));
+            //Obtener conversaciones Activas
+            //connection.Send(BitConverter.GetBytes((byte)3));
             //byte[] b = Encoding.Unicode.GetBytes();
             //connection.Send(BitConverter.GetBytes((short)b.Length));
             //connection.Send(b);
+        }
+
+        public void sessionLink(string user)
+        {
+            //SessionPacketHandler
+            connection.Send(BitConverter.GetBytes((byte)2));
+            byte[] b = Encoding.Unicode.GetBytes($"{username}:{user}");
+            connection.Send(BitConverter.GetBytes((short)b.Length));
+            connection.Send(b);
         }
 
         public void Close()

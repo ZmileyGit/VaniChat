@@ -1,6 +1,6 @@
 ﻿namespace VaniChat
 {
-    partial class Usuarios
+    partial class Conversaciones
     {
         /// <summary>
         /// Required designer variable.
@@ -70,7 +70,7 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Conversaciones activas";
             // 
-            // Usuarios
+            // Conversaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -79,7 +79,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listBox1);
-            this.Name = "Usuarios";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.Name = "Conversaciones";
             this.Text = "Usuarios";
             this.ResumeLayout(false);
             this.PerformLayout();
