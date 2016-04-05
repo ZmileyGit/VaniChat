@@ -3,7 +3,6 @@ package client.service.handlers;
 
 import client.network.ChatClient;
 import client.network.LoginClient;
-import client.network.SessionSender;
 import client.service.ChatService;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -11,18 +10,19 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 
-public class SessionServiceHandler extends ServiceHandler {
-
-    public final static byte HANDLED = 2;
+public class MessageServiceHandler extends ServiceHandler{
     
-    public SessionServiceHandler(ChatService service, Socket socket, DataInputStream in) {
+    public final static byte HANDLED = 1;
+    
+    public MessageServiceHandler(ChatService service, Socket socket, DataInputStream in) {
         super(service, socket,in);
         this.handled = HANDLED;
-        this.successor = new MessageServiceHandler(service,socket,in);
     }
 
     @Override
     protected void handleBehavior() throws IOException {
+        int session_id = in.readInt();
+        
         int length = in.readShort();
         
         ByteBuffer buffer =  ByteBuffer.allocate(length);
@@ -30,16 +30,18 @@ public class SessionServiceHandler extends ServiceHandler {
             buffer.put(in.readByte());
         }
 
-        new Thread(new AsyncTask(buffer,this)).start();
+        new Thread(new AsyncTask(buffer,session_id,this)).start();
     }
 
     private static class AsyncTask implements Runnable{
         
         private final ByteBuffer buffer;
-        private final SessionServiceHandler handler;
+        private final int session_id;
+        private final MessageServiceHandler handler;
 
-        public AsyncTask(ByteBuffer buffer, SessionServiceHandler handler) {
+        public AsyncTask(ByteBuffer buffer, int session_id, MessageServiceHandler handler) {
             buffer.position(0);
+            this.session_id = session_id;
             this.buffer = buffer;
             this.handler = handler;
         }
@@ -48,17 +50,11 @@ public class SessionServiceHandler extends ServiceHandler {
         public void run() {
             try {
                 CharBuffer usrbuff = ChatClient.CHARSET.newDecoder().decode(buffer);
-                String userlist = usrbuff.toString().trim();
-                String[] users = userlist.split(":");
-                System.out.println(handler.getService().getChat().getUser().getUsername() +  " is trying to Establish Chat Session with...");
-                for(int cont=0;cont < users.length;cont+=1){
-                   System.out.println("\t- "+users[cont]);
-                }
-                new SessionSender(handler.getService().getChat().getSocket(),userlist,handler).start();
+                String message = usrbuff.toString().trim();
+                System.out.printf("Enviando mensaje %s%n",message);
             } catch (IOException ex) {
-                System.out.println("VaniChat: Session Error");
+                System.out.println("VaniChat: LogIn Error");
             }
         }
     }
-    
 }

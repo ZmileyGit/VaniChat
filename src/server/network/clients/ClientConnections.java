@@ -36,8 +36,6 @@ public class ClientConnections {
         System.out.println("Connection with " + usuario.getUsername() + " has been established");
         connections.put(usuario, connection);
         links.put(connection, usuario);
-        System.out.println(connections);
-        System.out.println(links);
     }
     
     public synchronized ChatClientConnection getClientConnection(Usuario usuario){

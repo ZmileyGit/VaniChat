@@ -41,7 +41,7 @@ public class ChatService extends Service{
             try {
                 System.out.printf("Signed in as %s with ID: %d%n",username,serverID);
                 this.chat = new ChatClient(new Usuario(username,serverID));
-                this.chat.start();
+                new Thread(this.chat).start();
             } catch (IOException ex) {
                 System.out.println("VaniChat: Chat Error");
             }

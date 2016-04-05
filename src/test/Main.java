@@ -18,7 +18,7 @@ public class Main {
         data.writeShort(buser.length);
         data.write(buser);
         socket.close();
-        
+
         socket = new Socket("127.0.0.1",1234+5);
         data = new DataOutputStream(socket.getOutputStream());
         data.writeByte(0);

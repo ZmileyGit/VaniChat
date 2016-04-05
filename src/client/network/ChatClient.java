@@ -60,7 +60,11 @@ public class ChatClient extends Client{
     }
     
     public synchronized void addSession(Session session){
-        sessions.add(session);
+        if(!sessions.contains(session)){
+            sessions.add(session);
+        }else{
+            System.out.println("Session Already Active" + session);
+        }
         System.out.printf("%s%nSesiones de Chat Activas%s%n",user.getUsername(),sessions);
     }
 

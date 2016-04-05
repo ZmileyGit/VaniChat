@@ -1,9 +1,7 @@
 
 package server.network.clients;
 
-import server.classes.messages.Mensaje;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Objects;
 import server.classes.user.Usuario;
 
@@ -15,15 +13,11 @@ public class Session {
         this.session_id = session_id;
         this.connections = connections;
     }
-    
-    public void sendMessage(Mensaje message,Usuario source){
-        
-    }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + Objects.hashCode(this.session_id);
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.session_id);
         return hash;
     }
 

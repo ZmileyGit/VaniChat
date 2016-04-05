@@ -50,7 +50,11 @@ public class ChatClientConnection extends ClientConnection implements Stoppable{
     }
     
     public synchronized void addSession(Session session){
-        sessions.add(session);
+        if(!sessions.contains(session)){
+            sessions.add(session);
+        }else{
+            System.out.println("Repeated Session " + session);
+        }
     }
 
     public synchronized LinkedList<Session> getSessions() {
