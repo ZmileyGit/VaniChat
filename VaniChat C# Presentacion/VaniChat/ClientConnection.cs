@@ -54,7 +54,7 @@ namespace VaniChat
             //Thread.Sleep(500);
             //connection.Receive(buffer);
             //Thread.Sleep(500);
-            //buffer.Reverse(); //Necesitamos que se actualice bien la referencia asi que esto no hace nada XD
+            //buffer.Reverse();
             //Array.Reverse(buffer);
             //id = BitConverter.ToInt32(buffer,0);
             this.username = username;
@@ -159,7 +159,7 @@ namespace VaniChat
                     Thread.Sleep(500);
                     connection.Receive(buffer, size, SocketFlags.None);
                     Thread.Sleep(500);
-                    buffer.Reverse(); //Necesitamos que se actualice bien la referencia asi que esto no hace nada XD
+                    buffer.Reverse();
                     string text = Encoding.Unicode.GetString(buffer);
                     ListBox listBox = (ListBox)o;
                     listBox.Invoke((MethodInvoker)delegate

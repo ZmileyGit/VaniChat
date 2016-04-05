@@ -14,6 +14,10 @@ public class Session {
         this.connections = connections;
     }
 
+    public synchronized HashMap<Usuario, ChatClientConnection> getConnections() {
+        return connections;
+    }
+ 
     @Override
     public int hashCode() {
         int hash = 7;

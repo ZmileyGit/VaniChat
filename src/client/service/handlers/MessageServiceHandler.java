@@ -2,6 +2,7 @@
 package client.service.handlers;
 
 import client.network.ChatClient;
+import client.network.MessageSender;
 import client.service.ChatService;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -59,7 +60,8 @@ public class MessageServiceHandler extends ServiceHandler{
                     CharBuffer usrbuff = ChatClient.CHARSET.newDecoder().decode(buffer);
                     String message = usrbuff.toString().trim();
                     Session s =  session.get();
-                    System.out.printf("Enviando mensaje %s%n",message);
+                    System.out.printf("%s -> %s%n",handler.getService().getChat().getUser().getUsername(),message);
+                    new MessageSender(handler.getService().getChat().getSocket(),s,message,handler).start();
                 }
             } catch (IOException ex) {
                 System.out.println("VaniChat: LogIn Error");

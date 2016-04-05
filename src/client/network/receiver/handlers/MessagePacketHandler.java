@@ -11,18 +11,18 @@ import java.util.LinkedList;
 import client.classes.user.Usuario;
 import client.network.receiver.Session;
 
-class SessionPacketHandler extends PacketHandler {
+class MessagePacketHandler extends PacketHandler {
 
     public final static byte HANDLED = 2;
     
-    protected SessionPacketHandler(DataInputStream in, ChatReceiver receiver) {
+    protected MessagePacketHandler(DataInputStream in, ChatReceiver receiver) {
         super(in, receiver);
         this.handled = HANDLED;
-        this.successor = new MessagePacketHandler(in,receiver);
     }
 
     @Override
     protected void handleBehavior() throws IOException {
+        int user_id = in.readInt();
         int session_id = in.readInt();
         
         short length = in.readShort();
@@ -31,8 +31,11 @@ class SessionPacketHandler extends PacketHandler {
         for(int cont=0 ; cont<buffer.capacity(); cont+=1){
             buffer.put(in.readByte());
         }
-        
-        new Thread(new AsyncTask(session_id,buffer,this)).start();
+        buffer.position(0);
+        CharBuffer usrbuff = ChatClient.CHARSET.newDecoder().decode(buffer);
+        String message = usrbuff.toString().trim();
+        System.out.println("Mensaje nuevo " + user_id + " " + session_id + " : " + message);
+        //new Thread(new AsyncTask(session_id,buffer,this)).start();
     }
 
     private static class AsyncTask implements Runnable{

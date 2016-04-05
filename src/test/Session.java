@@ -12,12 +12,12 @@ public class Session {
         Socket socket = new Socket("127.0.0.1",1234+5);
         DataOutputStream data = new DataOutputStream(socket.getOutputStream());
         data.writeByte(2);
-        String user =  "Ruben:Lety";
+        String user =  "Lety";
         byte[] buser = user.getBytes(Charset.forName("UTF-16"));
         data.writeShort(buser.length);
         data.write(buser);
         socket.close();
-        
+        /*
         socket = new Socket("127.0.0.1",1234+5);
         data = new DataOutputStream(socket.getOutputStream());
         data.writeByte(2);
@@ -26,6 +26,7 @@ public class Session {
         data.writeShort(buser.length);
         data.write(buser);
         socket.close();
+        */
     }
     
 }

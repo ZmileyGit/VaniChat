@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import server.network.clients.handlers.PacketHandlers;
 import server.network.ChatServer;
@@ -31,6 +32,7 @@ public class ChatClientConnection extends ClientConnection implements Stoppable{
         while(run.get()){
             if(in.available()!=0){
                 new PacketHandlers().handlePacket(in,this);
+                System.out.println(sessions);
             }else{
                 try {
                     Thread.sleep(50);
@@ -50,17 +52,21 @@ public class ChatClientConnection extends ClientConnection implements Stoppable{
     }
     
     public synchronized void addSession(Session session){
-        if(!sessions.contains(session)){
-            sessions.add(session);
-        }else{
-            System.out.println("Repeated Session " + session);
-        }
+        sessions.add(session);
     }
 
     public synchronized LinkedList<Session> getSessions() {
         return sessions;
     }
     
-    
+    public synchronized Session getSession(Integer session_id){
+        System.out.println("Tamanio " + sessions.size());
+        Optional<Session> session = sessions.stream().filter(
+                (Session s)->{
+                    return s.getSession_id() == session_id;
+                }
+        ).findFirst();
+        return session.orElse(null);
+    }
     
 }
