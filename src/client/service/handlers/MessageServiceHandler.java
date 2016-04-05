@@ -2,13 +2,14 @@
 package client.service.handlers;
 
 import client.network.ChatClient;
-import client.network.LoginClient;
 import client.service.ChatService;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import client.network.receiver.Session;
+import java.util.Optional;
 
 public class MessageServiceHandler extends ServiceHandler{
     
@@ -49,9 +50,17 @@ public class MessageServiceHandler extends ServiceHandler{
         @Override
         public void run() {
             try {
-                CharBuffer usrbuff = ChatClient.CHARSET.newDecoder().decode(buffer);
-                String message = usrbuff.toString().trim();
-                System.out.printf("Enviando mensaje %s%n",message);
+                Optional<Session> session = handler.getService().getChat().getSessions().stream().filter(
+                        (Session s) -> {
+                            return s.getSession_id() == session_id;
+                        }
+                ).findFirst();
+                if(session.isPresent()){
+                    CharBuffer usrbuff = ChatClient.CHARSET.newDecoder().decode(buffer);
+                    String message = usrbuff.toString().trim();
+                    Session s =  session.get();
+                    System.out.printf("Enviando mensaje %s%n",message);
+                }
             } catch (IOException ex) {
                 System.out.println("VaniChat: LogIn Error");
             }
