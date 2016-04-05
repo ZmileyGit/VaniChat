@@ -83,6 +83,7 @@
             this.MaximizeBox = false;
             this.Name = "Conversaciones";
             this.Text = "Usuarios";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Conversaciones_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

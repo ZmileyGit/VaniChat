@@ -31,6 +31,7 @@ namespace VaniChat
             if(connection != null)
             {
                 connection.sessionLink(textBox1.Text);
+                MessageBox.Show($"Sesion establecida con {textBox1.Text}");
                 prev.Visible = false;
                 this.Visible = false;
                 Chat c = new Chat(connection);

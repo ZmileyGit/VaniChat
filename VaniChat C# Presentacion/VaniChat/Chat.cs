@@ -23,12 +23,18 @@ namespace VaniChat
         {
             InitializeComponent();
             this.connection = connection;
-            this.connection.beginReceiver(listBox1);
+            //this.connection.beginReceiver(listBox1);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.connection.send(textBox1.Text);
+            if (!string.IsNullOrWhiteSpace(textBox1.Text))
+            {
+                listBox1.Items.Add($"{connection.username}: {textBox1.Text}");
+                textBox1.Clear();
+                textBox1.Focus();
+                this.connection.send(textBox1.Text);
+            }
         }
     }
 }

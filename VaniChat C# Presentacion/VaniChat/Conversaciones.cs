@@ -23,6 +23,7 @@ namespace VaniChat
             InitializeComponent();
             this.connection = connection;
             label1.Text = this.connection.username;
+            MessageBox.Show($"Signed in as {this.connection.username}");
             //this.connection.requestActive();
         }
 
@@ -30,6 +31,15 @@ namespace VaniChat
         {
             EstablecerSesion s = new EstablecerSesion(connection,this);
             s.ShowDialog();
+        }
+
+        private void Conversaciones_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (connection != null)
+            {
+                connection.Close();
+                MessageBox.Show("Logged out");
+            }
         }
     }
 }

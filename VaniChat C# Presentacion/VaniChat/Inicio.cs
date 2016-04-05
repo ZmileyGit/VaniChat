@@ -14,8 +14,7 @@ namespace VaniChat
     public partial class Inicio : Form
     {
 
-        private readonly string IP = "127.0.0.1";
-        private readonly int port = 8080;
+        
 
         private ClientConnection connection;
 
@@ -26,17 +25,18 @@ namespace VaniChat
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint endP = new IPEndPoint(IPAddress.Parse(IP), port);
-            connection = new ClientConnection(socket, endP);
+
+            connection = new ClientConnection();
             try {
                 int id = connection.Connect(textBox1.Text);
                 Conversaciones c = new Conversaciones(connection);
                 this.Visible = false;
                 c.ShowDialog();
                 this.Visible = true;
+                this.connection = null;
             }catch(Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 MessageBox.Show("Error");
             }
 
@@ -44,7 +44,10 @@ namespace VaniChat
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            connection.Close();
+            if (connection != null)
+            {
+                connection.Close();
+            }
         }
     }
 }
