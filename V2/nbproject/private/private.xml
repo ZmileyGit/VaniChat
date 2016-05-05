@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/network/server/connections/handlers/UserLinkConnectionHandler.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/main/Usuario.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/network/server/connections/handlers/ChatLinkConnectionHandler.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/main/InputReader.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/server/ServerSessions.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/server/ServerHandlers.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/main/Session.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/network/server/main/Main.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/main/Handler.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/network/server/main/ChatServer.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/server/ServerChats.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/server/Handler.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/main/Usuarios.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/network/server/connections/handlers/LogInConnectionHandler.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/server/ServerSession.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/config/Configuration.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/test/login/Main.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/main/OutputWriter.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/main/Chat.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/network/server/connections/ChatClientConnection.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/server/ChatSession.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/network/server/connections/handlers/GroupConnectionHandler.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/network/server/connections/handlers/ConnectionHandler.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/classes/server/ServerChat.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/network/server/connections/ChatGroupConnection.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/network/server/connections/ClientConnection.java</file>
+            <file>file:/C:/Users/Alan/Documents/NetBeansProjects/VaniChat/VaniChatV2/src/vanichat/network/server/connections/handlers/MessageConnectionHandler.java</file>
+        </group>
+    </open-files>
+</project-private>
