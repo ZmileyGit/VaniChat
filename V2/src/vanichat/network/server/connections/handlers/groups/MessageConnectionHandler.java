@@ -4,10 +4,12 @@ package vanichat.network.server.connections.handlers.groups;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.util.Calendar;
 import vanichat.classes.server.ChatSession;
 import vanichat.config.Configuration;
 import vanichat.network.server.connections.ChatGroupConnection;
 import vanichat.network.server.connections.handlers.ConnectionHandler;
+import vanichat.network.server.db.*;
 
 public class MessageConnectionHandler extends ConnectionHandler {
 
@@ -42,6 +44,19 @@ public class MessageConnectionHandler extends ConnectionHandler {
                 System.out.printf("Couldn't send Message [%s] to User %s%n",message,session.getUser().getUsername());
             }
         });
+        
+        java.util.logging.Logger.getLogger("org.hibernate").setLevel(java.util.logging.Level.OFF);
+        Conversacion c = Conversacion.get(getConnection().getChat().getID());
+                    if(c==null){
+                        c = new Conversacion(getConnection().getChat().getID());
+                        Conversacion.guardarConversacion(c);
+                    }
+                    Mensaje m = new Mensaje();
+                    m.setContenido(message.getBytes(Configuration.DEFAULT_CHARSET));
+                    m.setId_conversacion(c.getId());
+                    Calendar calendar = Calendar.getInstance();
+                    m.setReceivedDateTime(calendar.getTime());
+                    Mensaje.guardarMensaje(m);
     }
     
     @Override

@@ -1,0 +1,17 @@
+<hibernate-mapping>
+    <class name="vanichat.network.server.db.Mensaje" table="mensaje" catalog="vanichat">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+	<property name="id_conversacion" type="java.lang.Integer">
+            <column name="id_conversacion" not-null="true" />
+        </property>
+        <property name="receivedDateTime" type="java.util.Date">
+            <column name="receivedDateTime" not-null="true" />
+        </property>
+        <property name="contenido" type="byte[]">
+            <column name="contenido" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
