@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buffer.cs" />
     <Compile Include="Chat.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -51,6 +52,8 @@
       <DependentUpon>Chat.cs</DependentUpon>
     </Compile>
     <Compile Include="ClientConnection.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Data.cs" />
     <Compile Include="EstablecerSesion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,6 +74,7 @@
     <Compile Include="Conversaciones.Designer.cs">
       <DependentUpon>Conversaciones.cs</DependentUpon>
     </Compile>
+    <Compile Include="Util.cs" />
     <EmbeddedResource Include="Chat.resx">
       <DependentUpon>Chat.cs</DependentUpon>
     </EmbeddedResource>
