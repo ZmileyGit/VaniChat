@@ -37,6 +37,37 @@ namespace VaniChat
             Texto = texto;
         }
 
+        public Data(byte mode, int id, string texto)
+        {
+            this.mode = mode;
+            Texto = texto;
+            MemoryStream ms = new MemoryStream();
+            BinaryWriter bw = new BinaryWriter(ms);
+            bw.Write(BitConverter.GetBytes(BigEndianInt(id)));
+            bw.Write(contenido);
+            bw.Close();
+            contenido = ms.ToArray();
+            ms.Close();
+        }
+
+        public Data(byte mode, int id)
+        {
+            this.mode = mode;
+            contenido = BitConverter.GetBytes(BigEndianInt(id));
+        }
+
+        public Data(byte mode, int chatid, int id)
+        {
+            this.mode = mode;
+            MemoryStream ms = new MemoryStream();
+            BinaryWriter bw = new BinaryWriter(ms);
+            bw.Write(BitConverter.GetBytes(BigEndianInt(chatid)));
+            bw.Write(BitConverter.GetBytes(BigEndianInt(id)));
+            bw.Close();
+            contenido = ms.ToArray();
+            ms.Close();
+        }
+
         public byte[] AsByteArray(bool bigEndian = false)
         {
             MemoryStream ms = new MemoryStream();

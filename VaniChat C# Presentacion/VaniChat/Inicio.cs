@@ -32,12 +32,19 @@ namespace VaniChat
                 connection = new ClientConnection(puerto);
                 try
                 {
-                    int id = connection.Connect(textBox1.Text);
-                    Conversaciones c = new Conversaciones(connection);
-                    this.Visible = false;
-                    c.ShowDialog();
-                    this.Visible = true;
-                    this.connection = null;
+                    bool valid = false;
+                    int id = connection.Connect(textBox1.Text, out valid);
+                    if (valid)
+                    {
+                        Conversaciones c = new Conversaciones(connection);
+                        this.Visible = false;
+                        c.ShowDialog();
+                        this.Visible = true;
+                        this.connection = null;
+                    }else
+                    {
+                        MessageBox.Show("Error");
+                    }
                 }
                 catch (Exception ex)
                 {

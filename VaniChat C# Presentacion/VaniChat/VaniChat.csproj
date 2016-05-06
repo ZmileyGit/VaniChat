@@ -51,6 +51,7 @@
     <Compile Include="Chat.Designer.cs">
       <DependentUpon>Chat.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChatC.cs" />
     <Compile Include="ClientConnection.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Data.cs" />

@@ -17,14 +17,21 @@ namespace VaniChat
     public class ClientConnection
     {
         private Socket connection;
+        private Socket listener;
         private EndPoint endP;
+        private ListBox list;
+        public List<ChatC> chatList = new List<ChatC>();
+
+        private Dictionary<int, ListBox> chats = new Dictionary<int, ListBox>();
+
         public int id { get; private set; }
-        public string username{ get; private set; }
+        public string username { get; private set; }
 
         private readonly string IP = "127.0.0.1";
         private readonly int port;
 
-        private Thread thread;
+        private Thread listenerThread;
+        private Thread userThread;
 
         public ClientConnection()
         {
@@ -40,7 +47,15 @@ namespace VaniChat
 
         private void wait(int bytes)
         {
-            while(connection.Available < bytes)
+            while (connection.Available < bytes)
+            {
+                Thread.Sleep(200);
+            }
+        }
+
+        private void listenerWait(int bytes)
+        {
+            while (listener.Available < bytes)
             {
                 Thread.Sleep(200);
             }
@@ -56,10 +71,11 @@ namespace VaniChat
         {
             Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             endP = new IPEndPoint(IPAddress.Parse(IP), port);
+            s.Connect(endP);
             return s;
         }
 
-        public int Connect(string username)
+        public int Connect(string username, out bool valid)
         {
             connection.Connect(endP);
             Data data = new Data(LOGIN, username);
@@ -67,102 +83,253 @@ namespace VaniChat
             this.username = username;
             wait(4);
             SizeBuffer buffer = new SizeBuffer();
-            connection.Receive(buffer,4,SocketFlags.None);
+            connection.Receive(buffer, 4, SocketFlags.None);
             DataBuffer databuffer = new DataBuffer(buffer.Value);
             wait(buffer.Value);
             connection.Receive(databuffer, buffer.Value, SocketFlags.None);
             id = BigEndianInt(BitConverter.ToInt32(databuffer.Data.contenido, 1));
             Console.WriteLine(id);
+            valid = true;
+            connection.Close();
+            userlink(out valid);
+            chatList = new List<ChatC>();
 
-            //connection.Close();
             return id;
+        }
+
+        public void bindList(ListBox listbox)
+        {
+            this.list = listbox;
+        }
+
+        public void userlink(out bool valid)
+        {
+            Initialize();
+            connection.Connect(endP);
+            Data data = new Data(USERLINK, id);
+            connection.Send(data.AsByteArray(true));
+            wait(4);
+            SizeBuffer buffer = new SizeBuffer();
+            connection.Receive(buffer, 4, SocketFlags.None);
+            DataBuffer databuffer = new DataBuffer(buffer.Value);
+            wait(buffer.Value);
+            connection.Receive(databuffer, buffer.Value, SocketFlags.None);
+            byte response = databuffer.Data.contenido[1];
+            if (response > 0)
+            {
+
+                valid = false;
+            } else
+            {
+
+                valid = true;
+                startUserLink();
+            }
+            //connection.Close();
         }
 
         public void send(string text)
         {
-            //Initialize();
-            //connection.Connect(endP);
-            Data data = new Data(MESSAGE, text);
-            connection.Send(data.AsByteArray());
-            //connection.Close();
-            
+            lock (connection)
+            {
+                
+            }
+
         }
 
         public void recuperarConversacion(string hashID)
         {
-            // Initialize();
-            //connection.Connect(endP);
-            Data data = new Data(RECOVERCONV, hashID);
-            connection.Send(data.AsByteArray());
-            byte[] buffer = new byte[4];
-            connection.Receive(buffer, 4, SocketFlags.None);
+            lock (connection)
+            {
+                Data data = new Data(RECOVERCONV, hashID);
+                connection.Send(data.AsByteArray(true));
+                byte[] buffer = new byte[4];
+                connection.Receive(buffer, 4, SocketFlags.None);
 
-            connection.Close();
+            }
         }
 
-        public void requestActive()
+        public void startUserLink()
         {
-            //Obtener conversaciones Activas
-            //connection.Send(BitConverter.GetBytes((byte)3));
-            //byte[] b = Encoding.Unicode.GetBytes();
-            //connection.Send(BitConverter.GetBytes((short)b.Length));
-            //connection.Send(b);
+            userThread = new Thread(userListener);
+            userThread.Start();
         }
 
-        public void sessionLink(string user)
+        private void userListener()
         {
-            //SessionPacketHandler
-            //Initialize();
-            //connection.Connect(endP);
-            Data data = new Data(GROUP, user);
-            connection.Send(data.AsByteArray());
-            connection.Close();
+            try
+            {
+                while (true)
+                {
+                    wait(4);
+                    lock (connection)
+                    {
+                        SizeBuffer buffer = new SizeBuffer();
+                        connection.Receive(buffer, 4, SocketFlags.None);
+                        DataBuffer databuffer = new DataBuffer(buffer.Value);
+                        wait(buffer.Value);
+                        connection.Receive(databuffer, buffer.Value, SocketFlags.None);
+                        int id = BigEndianInt(BitConverter.ToInt32(databuffer.Data.contenido, 1));
+                        byte[] b = new byte[databuffer.Data.contenido.Length - 5];
+                        Array.Copy(databuffer.Data.contenido, 5, b, 0, b.Length);
+                        string users = DEFAULT_CHARSET.GetString(b);
+                        ChatC c = new ChatC(id, users);
+                        lock (chatList)
+                        {
+                            chatList.Add(c);
+                        }
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
         }
+
+        public bool sessionLink(string user)
+        {
+            try
+            {
+                //Initialize();
+                //connection.Connect(endP);
+                int cid = -1;
+                lock (connection)
+                {
+                    Data data = new Data(GROUP, user);
+                    connection.Send(data.AsByteArray(true));
+                    wait(4);
+                    SizeBuffer buffer = new SizeBuffer();
+                    connection.Receive(buffer, 4, SocketFlags.None);
+                    DataBuffer databuffer = new DataBuffer(buffer.Value);
+                    wait(buffer.Value);
+                    connection.Receive(databuffer, buffer.Value, SocketFlags.None);
+                    cid = BigEndianInt(BitConverter.ToInt32(databuffer.Data.contenido, 1));
+                    Console.WriteLine(cid);
+                }
+                if (cid >= 0)
+                {
+                    bool b = chatLink(cid);
+                    if (b)
+                    {
+                        ChatC c = new ChatC(cid, user);
+                        lock (chatList)
+                        {
+                            chatList.Add(c);
+                        }
+                        list.Items.Add(c);
+                    }
+                    return b;
+                }
+                //connection.Close();
+                return false;
+            } catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool chatLink(int chatId)
+        {
+            listener = InitializeSocket();
+            byte response = 1;
+            lock (listener)
+            {
+                Data data = new Data(CHATLINK, chatId, id);
+                listener.Send(data.AsByteArray(true));
+                listenerWait(4);
+                SizeBuffer buffer = new SizeBuffer();
+                listener.Receive(buffer, 4, SocketFlags.None);
+                DataBuffer databuffer = new DataBuffer(buffer.Value);
+                listenerWait(buffer.Value);
+                listener.Receive(databuffer, buffer.Value, SocketFlags.None);
+                response = databuffer.Data.contenido[1];
+            }
+            if (response > 0)
+            {
+                return false;
+            }
+            else
+            {
+                
+                beginReceiver(chatId);
+                return true;
+            }
+        }
+        public void CloseChat()
+        {
+            if (listenerThread != null)
+            {
+                listenerThread.Abort();
+            }
+            try
+            {
+                listener.Close();
+            }catch(Exception e)
+            {
+
+            }
+        }
+
 
         public void Close()
         {
-            if (thread != null)
+            if (listenerThread != null)
             {
-                thread.Abort();
+                listenerThread.Abort();
             }
-            connection.Close();
+            if(userThread != null)
+            {
+                userThread.Abort();
+            }
+            try
+            {
+                connection.Close();
+                listener.Close();
+            }catch(Exception e)
+            {
+
+            }
         }
 
-        public void beginReceiver(ListBox listBox)
+        public void registerRoom(int chat, ListBox listBox)
         {
-            //Initialize();
-            //connection.Connect(endP);
-            thread = new Thread(receive);
-            thread.Start(listBox);
+            chats.Add(chat, listBox);
         }
 
-        private void receive(object o) //Recibir mensajes en chat
+        public void beginReceiver(int chatId)
+        {
+            listenerThread = new Thread(receive);
+            listenerThread.Start();
+        }
+
+        private void receive() //Recibir mensajes en chat
         {
             try {
-                while (connection.Connected)
+                while (listener.Connected)
                 {
-                    byte[] buffer = new byte[1];
-                    connection.Receive(buffer, 1, SocketFlags.None);
-                    byte type = buffer[0];
-                    buffer = new byte[2];
-                    Thread.Sleep(500);
-                    connection.Receive(buffer, 2, SocketFlags.None);
-                    Thread.Sleep(500);
-                    buffer.Reverse();
-                    int size = BitConverter.ToInt16(buffer, 0);
-                    buffer = new byte[size];
-                    Thread.Sleep(500);
-                    connection.Receive(buffer, size, SocketFlags.None);
-                    Thread.Sleep(500);
-                    buffer.Reverse();
-                    string text = Encoding.Unicode.GetString(buffer);
-                    ListBox listBox = (ListBox)o;
-                    listBox.Invoke((MethodInvoker)delegate
+                    while (listener.Available < 4)
                     {
-                        listBox.Items.Add(text);
-                    });
+                        Thread.Sleep(200);
+                    }
+                    lock (listener)
+                    {
+
+                        listenerWait(4);
+                        //ListBox listBox = chats[chatId];
+                        //if (listBox != null)
+                        //{
+                        //    listBox.Invoke((MethodInvoker)delegate
+                        //    {
+                        //        listBox.Items.Add(text);
+                        //    });
+                        //}
+                    }
+
                 }
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
 
             }
