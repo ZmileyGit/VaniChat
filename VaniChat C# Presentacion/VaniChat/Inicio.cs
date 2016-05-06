@@ -14,18 +14,21 @@ namespace VaniChat
     public partial class Inicio : Form
     {
 
-        
-
         private ClientConnection connection;
 
         public Inicio()
         {
             InitializeComponent();
             textBox2.Text = Configuration.DEFAULT_PORT.ToString();
+            textBox2.Enabled = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(textBox1.Text))
+            {
+                return;
+            }
             ushort puerto = 0;
             if (ushort.TryParse(textBox2.Text, out puerto))
             {

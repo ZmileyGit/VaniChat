@@ -19,10 +19,12 @@ namespace VaniChat
             InitializeComponent();
         }
 
-        public Chat(ClientConnection connection)
+        public Chat(ClientConnection connection, int cId)
         {
             InitializeComponent();
             this.connection = connection;
+            this.connection.registerRoom(cId, listBox1);
+            //this.connection.beginReceiver(cId);
             //this.connection.beginReceiver(listBox1);
         }
 
@@ -30,10 +32,11 @@ namespace VaniChat
         {
             if (!string.IsNullOrWhiteSpace(textBox1.Text))
             {
-                listBox1.Items.Add($"{connection.username}: {textBox1.Text}");
+                //listBox1.Items.Add($"{connection.username}: {textBox1.Text}");
+                string text = textBox1.Text;
                 textBox1.Clear();
                 textBox1.Focus();
-                this.connection.send(textBox1.Text);
+                connection.send(text);
             }
         }
     }

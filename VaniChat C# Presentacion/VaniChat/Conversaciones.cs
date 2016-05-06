@@ -70,7 +70,34 @@ namespace VaniChat
             if (connection != null)
             {
                 connection.Close();
-                MessageBox.Show("Logged out");
+                MessageBox.Show("Sesión finalizada");
+            }
+        }
+
+        private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listBox1.SelectedIndex != -1)
+            {
+                ChatC chat = null;
+                try
+                {
+                    lock (connection.chatList)
+                    {
+                        chat = connection.chatList[listBox1.SelectedIndex];
+                    }
+                }catch(Exception ex)
+                {
+
+                }
+                if (chat != null)
+                {
+                    if (connection.chatLink(chat.id))
+                    {
+                        Chat c = new Chat(connection, chat.id);
+                        c.ShowDialog();
+                    }
+
+                }
             }
         }
     }

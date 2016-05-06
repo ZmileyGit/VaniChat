@@ -23,6 +23,7 @@ namespace VaniChat
         public List<ChatC> chatList = new List<ChatC>();
 
         private Dictionary<int, ListBox> chats = new Dictionary<int, ListBox>();
+        private ListBox messageList;
 
         public int id { get; private set; }
         public string username { get; private set; }
@@ -130,9 +131,10 @@ namespace VaniChat
 
         public void send(string text)
         {
-            lock (connection)
+            lock (listener)
             {
-                
+                Data data = new Data(MESSAGE,text);
+                listener.Send(data.AsByteArray(true));
             }
 
         }
@@ -188,7 +190,7 @@ namespace VaniChat
             }
         }
 
-        public bool sessionLink(string user)
+        public int sessionLink(string user)
         {
             try
             {
@@ -220,13 +222,13 @@ namespace VaniChat
                         }
                         list.Items.Add(c);
                     }
-                    return b;
+                    return cid;
                 }
                 //connection.Close();
-                return false;
+                return cid;
             } catch (Exception e)
             {
-                return false;
+                return -1;
             }
         }
 
@@ -252,7 +254,6 @@ namespace VaniChat
             }
             else
             {
-                
                 beginReceiver(chatId);
                 return true;
             }
@@ -309,22 +310,30 @@ namespace VaniChat
             try {
                 while (listener.Connected)
                 {
-                    while (listener.Available < 4)
-                    {
-                        Thread.Sleep(200);
-                    }
+                    listenerWait(4);
                     lock (listener)
                     {
-
-                        listenerWait(4);
-                        //ListBox listBox = chats[chatId];
-                        //if (listBox != null)
-                        //{
-                        //    listBox.Invoke((MethodInvoker)delegate
-                        //    {
-                        //        listBox.Items.Add(text);
-                        //    });
-                        //}
+                        SizeBuffer buffer = new SizeBuffer();
+                        listener.Receive(buffer, 4, SocketFlags.None);
+                        DataBuffer databuffer = new DataBuffer(buffer.Value);
+                        listenerWait(buffer.Value);
+                        listener.Receive(databuffer, buffer.Value, SocketFlags.None);
+                        int chatId = BigEndianInt(BitConverter.ToInt32(databuffer.Data.contenido, 1));
+                        int us = BigEndianInt(BitConverter.ToInt32(databuffer.Data.contenido, 5));
+                        byte[] u = new byte[us];
+                        Array.Copy(databuffer.Data.contenido, 1 + 4 + 4, u, 0, u.Length);
+                        string user = DEFAULT_CHARSET.GetString(u);
+                        byte[] b = new byte[buffer.Value - us - 1 - 4 - 4];
+                        Array.Copy(databuffer.Data.contenido, 1+4+4+us, b, 0, b.Length);
+                        string text = DEFAULT_CHARSET.GetString(b);
+                        ListBox listBox = chats[chatId];
+                        if (listBox != null)
+                        {
+                            listBox.Invoke((MethodInvoker)delegate
+                            {
+                                listBox.Items.Add($"{user}->{text}");
+                            });
+                        }
                     }
 
                 }

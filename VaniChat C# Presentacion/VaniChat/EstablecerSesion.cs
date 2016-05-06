@@ -30,12 +30,13 @@ namespace VaniChat
         {
             if(connection != null)
             {
-                if (connection.sessionLink(textBox1.Text))
+                int cid = connection.sessionLink(textBox1.Text);
+                if (cid!=-1)
                 {
                     MessageBox.Show($"Sesion establecida con {textBox1.Text}");
                     prev.Visible = false;
                     this.Visible = false;
-                    Chat c = new Chat(connection);
+                    Chat c = new Chat(connection,cid);
                     c.ShowDialog();
                     prev.Visible = true;
                     this.Close();
