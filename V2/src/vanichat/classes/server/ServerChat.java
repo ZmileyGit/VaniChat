@@ -43,4 +43,15 @@ public class ServerChat extends Chat{
         }
     }
     
+    public LinkedList<ChatSession> getIterableSessionList(){
+        slock.lock();
+        try{
+            LinkedList<ChatSession> sessions =  new LinkedList<>();
+            this.sessions.stream().forEach(sessions::push);
+            return sessions;
+        }finally{
+            slock.unlock();
+        }
+    }
+    
 }

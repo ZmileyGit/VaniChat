@@ -29,5 +29,13 @@ public class ChatGroupConnection extends ChatClientConnection{
         ServerHandlers handler = new ServerHandlers(new MessageConnectionHandler(this));
         new Thread(handler).start();
     }
+
+    public Usuario getUser() {
+        return user;
+    }
+
+    public ServerChat getChat() {
+        return chat;
+    }
     
 }

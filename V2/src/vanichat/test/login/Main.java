@@ -4,8 +4,7 @@ package vanichat.test.login;
 import java.io.IOException;
 import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.nio.CharBuffer;
 import vanichat.classes.main.InputReader;
 import vanichat.classes.main.OutputWriter;
 import vanichat.config.Configuration;
@@ -102,6 +101,22 @@ public class Main {
         buff.put(buser);
         data.write(buff);
         
+        ByteBuffer buffer = in.read();
+        buffer.position(1);
+        Integer cid = buffer.getInt();
+        Integer largo =  buffer.getInt();
+        ByteBuffer root = ByteBuffer.allocate(largo);
+        for(int cont=0; cont < root.capacity(); cont+=1){
+            root.put(buffer.get());
+        }
+        root.position(0);
+        CharBuffer usrchar = Configuration.DEFAULT_CHARSET.newDecoder().decode(root);
+        String user = usrchar.toString().trim();
+        
+        CharBuffer messchar = Configuration.DEFAULT_CHARSET.newDecoder().decode(buffer);
+        String mess = messchar.toString().trim();
+        
+        System.out.printf(" %s -> %s%n", user, mess);
         return 0;
     }
     
@@ -116,7 +131,7 @@ public class Main {
         Integer cidLE = requestGroup(outE,inE,"Lety");
         
         Socket SR = connectToChat(tokenE,cidLE);
-        sendMessage(SR,"Hola");
+        sendMessage(SR,"Hola Lety");
         
         Socket SL = connectToChat(tokenL,cidLE);
         
@@ -125,12 +140,6 @@ public class Main {
         OutputWriter out = new OutputWriter(socket.getOutputStream());
         InputReader in = new InputReader(socket.getInputStream());
         Integer cid = requestGroup(out,in,"Ruby");
-        
-        //Socket socket = connectToChat(tokenL,cidLE);
-        
-        
-        
-        
 
     }
     

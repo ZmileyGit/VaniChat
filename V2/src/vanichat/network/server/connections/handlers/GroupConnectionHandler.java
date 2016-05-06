@@ -81,7 +81,6 @@ public class GroupConnectionHandler extends ConnectionHandler{
                 session.getConnection().getWriter().write(response);
             } catch (IOException ex) {
                 System.out.printf("Couldn't reach User %s for Chat %d%n", user.getUsername(),chat.getID());
-                ex.printStackTrace();
             }
         });
         
