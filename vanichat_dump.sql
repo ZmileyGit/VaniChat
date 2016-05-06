@@ -17,7 +17,7 @@
 
 DROP SCHEMA IF EXISTS VaniChat;
 CREATE SCHEMA VaniChat;
-USE SCHEMA VaniChat;
+USE VaniChat;
 
 --
 -- Table structure for table `conversacion`
